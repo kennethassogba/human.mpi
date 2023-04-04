@@ -5,6 +5,7 @@
 #define USE_HUMAN_MPI
 #endif
 
+#define USE_HUMAN_MPI
 #define DEBUG_HUMAN_MPI
 
 #include <string>
