@@ -3,10 +3,12 @@
 A vanilla header-only object oriented interface around MPI in C++
 
 ## Build
-- mkdir build; cd build
-- cmake ..
-- make -j
-- ./usage
+```bash
+mkdir build; cd build
+cmake ..
+make -j
+./usage
+```
 
 ## Macro
 - -DUSE_HUMAN_MPI use the lib
