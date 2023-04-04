@@ -133,7 +133,7 @@ namespace human
       // Time
       // ----------------------------------------------------------------
       void time(const std::string &event) { time_.update(event); }
-      void displayTime() { time_.display(); }
+      void display() { time_.display(); }
 
     private:
       void check(int ier, std::string message = "");

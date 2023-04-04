@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
   }
   else
   {
-    msg_sent = " world!";
+    msg_sent = "world!";
     other = 0;
   }
 
@@ -35,7 +35,9 @@ int main(int argc, char *argv[])
   world.send(msg_sent, other, tag);
   world.recv(msg_recv, other, tag);
 
-  std::cout << msg_sent << " " << msg_recv << std::endl;
+  std::cout << "P" << rank << " " << msg_sent << " " << msg_recv << std::endl;
+
+  world.display();
 
   return 0;
 }
