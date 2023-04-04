@@ -10,6 +10,8 @@ int main(int argc, char* argv[])
   auto rank = world.rank();
   auto size = world.size();
 
+  std::cout << "Process " << rank <<"/" << size << std::endl;
+
   if (world.rank() == 0)
   {
     // world.send(1, 0, "Hello");
@@ -22,7 +24,6 @@ int main(int argc, char* argv[])
     std::string msg;
     // world.recv(0, 0, msg);
     std::cout << msg << ", ";
-    std::cout.flush();
     // world.send(0, 1, "world");
   }
 
