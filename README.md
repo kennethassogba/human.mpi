@@ -1,6 +1,6 @@
 # Human.MPI 
 
-A simple header-only object oriented interface around MPI in C++
+A vanilla header-only object oriented interface around MPI in C++
 
 ## Roadmap
 src

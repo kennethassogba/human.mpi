@@ -103,20 +103,20 @@ namespace human {  namespace mpi {
     public:
       Timer() : out_file_(nullptr) {}
     
-      void update(const std::string& EventName) {
+      void update(const std::string& event) {
 #if HUMAN_MPI_TIMER_FOR_REAL
-        TimeTable_[EventName].update();
+        TimeTable_[event].update();
 #else
-        (void) EventName;
+        (void) event;
 #endif
       }
 
       void set(std::ofstream* outf) { out_file_ = outf; }
 
       void display() {
-        int    nbCall;
-        double tCumul;
-        std::string eventName;
+        int    count;
+        double total;
+        std::string event;
         std::ostringstream ostr;
         ostr.str("");
 
@@ -135,15 +135,15 @@ namespace human {  namespace mpi {
         ostr.unsetf(std::ios::floatfield); 
 
         for(const auto& iter: TimeTable_) {
-          nbCall    = iter.second.nb_call_;
-          tCumul    = iter.second.time_total_;
-          eventName = iter.first;
+          count    = iter.second.nb_call_;
+          total    = iter.second.time_total_;
+          event = iter.first;
 
           ostr << std::setw(10) << " "
-               << std::setprecision(5) << std::setw(10) << tCumul
+               << std::setprecision(5) << std::setw(10) << total
                << "  "
-               << std::setw(10) << nbCall
-               << "     " << eventName.c_str()
+               << std::setw(10) << count
+               << "     " << event.c_str()
                << std::endl;
         }
         ostr << "          ------------------------------------------------------------------------" << std::endl;
