@@ -2,7 +2,7 @@
 // Use the cmake(readme) or
 // mpiccx usage.cpp -o usage
 // mpirun -n 2 usage
-
+#include <cassert>
 #include "../inc/mpi.hpp"
 
 int main(int argc, char *argv[])
@@ -14,20 +14,28 @@ int main(int argc, char *argv[])
 
   std::cout << "Process " << rank << "/" << size << std::endl;
 
-  if (world.rank() == 0)
+  assert(size == 2 && "Designed for 2 process, relauch with mpirun -n 2");
+
+  std::string msg_sent, msg_recv;
+  int other;
+
+  if (world.rank() == world.root())
   {
-    // world.send(1, 0, "Hello");
-    std::string msg;
-    // world.recv(1, 1, msg);
-    std::cout << msg << "!" << std::endl;
+    msg_sent = "Hello";
+    other = 1;
   }
   else
   {
-    std::string msg;
-    // world.recv(0, 0, msg);
-    std::cout << msg << ", ";
-    // world.send(0, 1, "world");
+    msg_sent = " world!";
+    other = 0;
   }
+
+  auto tag = 1;
+
+  world.send(msg_sent, other, tag);
+  world.recv(msg_recv, other, tag);
+
+  std::cout << msg_sent << " " << msg_recv << std::endl;
 
   return 0;
 }
