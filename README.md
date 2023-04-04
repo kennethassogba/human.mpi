@@ -2,6 +2,12 @@
 
 A vanilla header-only object oriented interface around MPI in C++
 
+## Build
+- mkdir build; cd build
+- cmake ..
+- make
+- ./usage
+
 ## Roadmap
 - Write tests
 - Cmake Ninja
