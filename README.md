@@ -12,6 +12,8 @@ make -j
 
 ## Macro
 - -DUSE_HUMAN_MPI use the lib
+- -DHUMAN_MPI_TIMER_USE_MPI=false use chrono
+- -DHUMAN_MPI_TIMER_FOR_REAL=false disable timing
 
 ## Roadmap
 - Write tests

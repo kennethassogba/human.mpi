@@ -3,20 +3,18 @@
 
 #ifdef USE_HUMAN_MPI
 
-
 /****************************************************************************
  * @class TimeEvent: Time one event
  * @class Timer: Track multiple events and display
- * 
+ *
  * @define: HUMAN_MPI_TIMER_USE_MPI
  * if == true  use MPI_Wtime()
  * if == false use high_resolution_clock
- * 
+ *
  * @define: HUMAN_MPI_TIMER_FOR_REAL
  * if == true  record time
  * if == false do not time
  ****************************************************************************/
-
 
 #ifdef USE_HUMAN_MPI
 #define HUMAN_MPI_TIMER_USE_MPI 1
@@ -33,20 +31,23 @@
 #include <iomanip>
 #include <chrono>
 
-
-namespace human {  namespace mpi {
+namespace human
+{
+  namespace mpi
+  {
 
     // ----------------------------------------------------------------
     // TimeEvent: Time one event
     // ----------------------------------------------------------------
-    class TimeEvent {
+    class TimeEvent
+    {
 
     public:
       using TimePoint = std::chrono::high_resolution_clock::time_point;
 
-      int    nb_call_    = 0;
+      int nb_call_ = 0;
       double time_total_ = 0.0;
-      bool   is_ticking_ = false;
+      bool is_ticking_ = false;
 
 #if HUMAN_MPI_TIMER_USE_MPI
       double time_start_;
@@ -56,21 +57,21 @@ namespace human {  namespace mpi {
       TimePoint time_stop_;
 #endif
 
-      TimeEvent() 
-        : nb_call_    (0)
-        , time_total_ (0.0)
-        , is_ticking_ (false) {}
+      TimeEvent()
+          : nb_call_(0), time_total_(0.0), is_ticking_(false)
+      {
+      }
 
       void update()
       {
-        if(!is_ticking_)
+        if (!is_ticking_)
         {
           ++nb_call_;
 
 #if HUMAN_MPI_TIMER_USE_MPI
           time_total_ -= MPI_Wtime();
 #else
-          time_start_  = std::chrono::high_resolution_clock::now();
+          time_start_ = std::chrono::high_resolution_clock::now();
 #endif
         }
         else
@@ -78,18 +79,20 @@ namespace human {  namespace mpi {
 #if HUMAN_MPI_TIMER_USE_MPI
           time_total_ += MPI_Wtime();
 #else
-          time_stop_   = std::chrono::high_resolution_clock::now();
+          time_stop_ = std::chrono::high_resolution_clock::now();
           time_total_ += elapsed_time_second(time_start_, time_stop_);
 #endif
         }
         is_ticking_ = !is_ticking_;
       }
 
-      double elapsed_time_second(double t0, double t1) const {
+      double elapsed_time_second(double t0, double t1) const
+      {
         return t1 - t0;
       }
 
-      double elapsed_time_second(TimePoint t0, TimePoint t1) const {
+      double elapsed_time_second(TimePoint t0, TimePoint t1) const
+      {
         std::chrono::duration<double, std::nano> diff = t1 - t0;
         diff = std::chrono::duration_cast<std::chrono::nanoseconds>(diff);
         return diff.count() * 1.E-9;
@@ -99,22 +102,25 @@ namespace human {  namespace mpi {
     // ----------------------------------------------------------------
     // Timer: Track many timing events
     // ----------------------------------------------------------------
-    class Timer {
+    class Timer
+    {
     public:
       Timer() : out_file_(nullptr) {}
-    
-      void update(const std::string& event) {
+
+      void update(const std::string &event)
+      {
 #if HUMAN_MPI_TIMER_FOR_REAL
         time_table_[event].update();
 #else
-        (void) event;
+        (void)event;
 #endif
       }
 
-      void set(std::ofstream* outf) { out_file_ = outf; }
+      void set(std::ofstream *outf) { out_file_ = outf; }
 
-      void display() {
-        int    count;
+      void display(const std::string msg = "")
+      {
+        int count;
         double total;
         std::string event;
         std::ostringstream ostr;
@@ -129,12 +135,13 @@ namespace human {  namespace mpi {
 
         ostr << std::endl
              << "          ------------------------------------------------------------------------" << std::endl
-             << "              time(s)      #call     event          using " << timingtype << std::endl
+             << "              time(s)      #call     event        using " << timingtype << "  " << msg << std::endl
              << "          ------------------------------------------------------------------------" << std::endl;
 
-        ostr.unsetf(std::ios::floatfield); 
+        ostr.unsetf(std::ios::floatfield);
 
-        for(const auto& evt: time_table_) {
+        for (const auto &evt : time_table_)
+        {
           event = evt.first;
           count = evt.second.nb_call_;
           total = evt.second.time_total_;
@@ -149,14 +156,14 @@ namespace human {  namespace mpi {
         ostr << "          ------------------------------------------------------------------------" << std::endl;
 
         std::cout << ostr.str();
-        if(out_file_) *out_file_ << ostr.str();
+        if (out_file_)
+          *out_file_ << ostr.str();
       }
 
     private:
       std::map<std::string, TimeEvent> time_table_;
-      std::ofstream* out_file_;
+      std::ofstream *out_file_;
     };
-
 
   }
 }
