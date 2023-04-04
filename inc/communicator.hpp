@@ -89,7 +89,7 @@ namespace human
       template <class Type>
       void recv(Type *buffer, int count, int sender, int tag);
 
-      void recv(std::string &buffer, int count, int sender, int tag);
+      void recv(std::string &buffer, int sender, int tag);
 
       template <class Type>
       void isend(Type *buffer, int count, int receiver, int tag, MPI_Request &request);
@@ -163,7 +163,6 @@ template <class Type>
 void human::mpi::communicator::send(Type *buffer, int count, int receiver, int tag)
 {
 #ifdef USE_HUMAN_MPI
-
   if (size_ <= 1)
     return;
 
@@ -183,11 +182,29 @@ void human::mpi::communicator::send(Type *buffer, int count, int receiver, int t
 #endif
 }
 
+void human::mpi::communicator::send(std::string &buffer, int receiver, int tag)
+{
+#ifdef USE_HUMAN_MPI
+  if (size_ <= 1)
+    return;
+
+  int data_size = buffer.size();
+
+  send<int>(&data_size, 1, receiver, tag + 1);
+
+  send<char>(const_cast<char *>(buffer.c_str()), data_size, receiver, tag);
+
+#else
+  (void)buffer;
+  (void)receiver;
+  (void)tag;
+#endif
+}
+
 template <class Type>
 void human::mpi::communicator::isend(Type *buffer, int count, int receiver, int tag, MPI_Request &request)
 {
 #ifdef USE_HUMAN_MPI
-
   if (size_ <= 1)
     return;
 
@@ -215,9 +232,7 @@ void human::mpi::communicator::isend(Type *buffer, int count, int receiver, int 
 template <class Type>
 void human::mpi::communicator::recv(Type *buffer, int count, int sender, int tag)
 {
-
 #ifdef USE_HUMAN_MPI
-
   if (size_ <= 1)
     return;
 
@@ -237,11 +252,30 @@ void human::mpi::communicator::recv(Type *buffer, int count, int sender, int tag
 #endif
 }
 
+void human::mpi::communicator::recv(std::string &buffer, int sender, int tag)
+{
+#ifdef USE_HUMAN_MPI
+  if (size_ <= 1)
+    return;
+
+  int data_size(0);
+
+  recv<int>(&data_size, 1, sender, tag + 1);
+
+  buffer.resize(data_size);
+
+  recv<char>(const_cast<char *>(buffer.c_str()), data_size, sender, tag);
+#else
+  (void)buffer;
+  (void)sender;
+  (void)tag;
+#endif
+}
+
 template <class Type>
 void human::mpi::communicator::irecv(Type *buffer, int count, int sender, int tag, MPI_Request &request)
 {
 #ifdef USE_HUMAN_MPI
-
   if (size_ <= 1)
     return;
 
@@ -269,7 +303,6 @@ template <class Type>
 void human::mpi::communicator::allreduce_sum(Type &value)
 {
 #ifdef USE_HUMAN_MPI
-
   if (size_ <= 1)
     return;
 
@@ -291,7 +324,6 @@ template <class Type>
 void human::mpi::communicator::iallreduce_sum(Type &value, MPI_Request &request)
 {
 #if defined(USE_HUMAN_MPI)
-
   if (size_ <= 1)
     return;
 
@@ -318,7 +350,6 @@ template <class Type>
 void human::mpi::communicator::bcast(Type &buffer, int count)
 {
 #ifdef USE_HUMAN_MPI
-
   if (size_ <= 1)
     return;
 
@@ -341,7 +372,6 @@ template <class Type>
 void human::mpi::communicator::bcast(Type *buffer, int count)
 {
 #ifdef USE_HUMAN_MPI
-
   if (size_ <= 1)
     return;
 
@@ -364,7 +394,6 @@ template <class Type>
 void human::mpi::communicator::bcast(std::vector<Type> &buffer)
 {
 #ifdef USE_HUMAN_MPI
-
   if (size_ <= 1)
     return;
 
@@ -392,7 +421,6 @@ void human::mpi::communicator::gather(const Type *buffer_send,
                                       int count_recv)
 {
 #ifdef USE_HUMAN_MPI
-
   if (size_ <= 1)
     return;
 
@@ -404,7 +432,6 @@ void human::mpi::communicator::gather(const Type *buffer_send,
 
   check(ier);
   time_.update("mpi::Gather");
-
 #else
   (void)buffer;
   (void)count;
