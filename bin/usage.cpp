@@ -1,5 +1,7 @@
-// A simple example using huyman.mpi.
-// mpiccx usage.cpp
+// A simple example using human.mpi
+// Use the cmake(readme) or
+// mpiccx usage.cpp -o usage
+// mpirun -n 2 usage
 
 #include "../inc/mpi.hpp"
 
