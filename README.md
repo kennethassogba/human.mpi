@@ -9,5 +9,9 @@ A vanilla header-only object oriented interface around MPI in C++
 - Simple Doc
 - Write docker file
 
+## Write
+- Developping a wrapper around MPI
+- What I learn will writing
+
 
 Inspired by Boost.MPI
