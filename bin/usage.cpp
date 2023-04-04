@@ -1,16 +1,16 @@
 // A simple example using huyman.mpi.
 // mpiccx usage.cpp
 
-#include "inc/mpi.hpp"
+#include "../inc/mpi.hpp"
 
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
   human::mpi::communicator world(argc, argv);
 
   auto rank = world.rank();
   auto size = world.size();
 
-  std::cout << "Process " << rank <<"/" << size << std::endl;
+  std::cout << "Process " << rank << "/" << size << std::endl;
 
   if (world.rank() == 0)
   {
