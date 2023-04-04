@@ -20,6 +20,9 @@ namespace human
   namespace mpi
   {
 
+    const int any_source = MPI_ANY_SOURCE;
+    const int any_tag = MPI_ANY_TAG;
+
     class communicator
     {
     public:
@@ -81,8 +84,12 @@ namespace human
       template <class Type>
       void send(Type *buffer, int count, int receiver, int tag);
 
+      void send(std::string &buffer, int receiver, int tag);
+
       template <class Type>
       void recv(Type *buffer, int count, int sender, int tag);
+
+      void recv(std::string &buffer, int count, int sender, int tag);
 
       template <class Type>
       void isend(Type *buffer, int count, int receiver, int tag, MPI_Request &request);
@@ -129,7 +136,7 @@ namespace human
       void displayTime() { time_.display(); }
 
     private:
-      void CheckError(int ier, std::string message = "");
+      void check(int ier, std::string message = "");
 
       // ----------------------------------------------------------------
       // Attributes
@@ -165,7 +172,7 @@ void human::mpi::communicator::send(Type *buffer, int count, int receiver, int t
   time_.update("mpi::Send");
 
   int ier = MPI_Send(buffer, count, datatype, receiver, tag, mpi_comm_);
-  CheckError(ier);
+  check(ier);
 
   time_.update("mpi::Send");
 #else
@@ -189,7 +196,7 @@ void human::mpi::communicator::isend(Type *buffer, int count, int receiver, int 
   time_.update("mpi::ISend");
 
   int ier = MPI_Isend((void *)buffer, count, datatype, receiver, tag, mpi_comm_, &request);
-  CheckError(ier);
+  check(ier);
 
   time_.update("mpi::ISend");
 #else
@@ -219,7 +226,7 @@ void human::mpi::communicator::recv(Type *buffer, int count, int sender, int tag
   time_.update("mpi::Recv");
 
   int ier = MPI_Recv(buffer, count, datatype, sender, tag, mpi_comm_, MPI_STATUS_IGNORE);
-  CheckError(ier);
+  check(ier);
 
   time_.update("mpi::Recv");
 #else
@@ -243,7 +250,7 @@ void human::mpi::communicator::irecv(Type *buffer, int count, int sender, int ta
   time_.update("mpi::IRecv");
 
   int ier = MPI_Irecv((void *)buffer, count, datatype, sender, tag, mpi_comm_, &request);
-  CheckError(ier);
+  check(ier);
 
   time_.update("mpi::IRecv");
 #else
@@ -272,7 +279,7 @@ void human::mpi::communicator::allreduce_sum(Type &value)
   time_.update("mpi::Allreduce_Sum");
 
   int ier = MPI_Allreduce(&tmp_send, &value, 1, datatype, MPI_SUM, mpi_comm_);
-  CheckError(ier);
+  check(ier);
 
   time_.update("mpi::Allreduce_Sum");
 #else
@@ -295,7 +302,7 @@ void human::mpi::communicator::iallreduce_sum(Type &value, MPI_Request &request)
 
   int ier = MPI_Iallreduce(&tmp_send, &value, 1, datatype, MPI_SUM, mpi_comm_, &request);
 
-  CheckError(ier);
+  check(ier);
 
   time_.update("mpi::Iallreduce_Sum");
 #else
@@ -321,7 +328,7 @@ void human::mpi::communicator::bcast(Type &buffer, int count)
 
   int ier = MPI_Bcast(&buffer, count, datatype, root_, mpi_comm_);
 
-  CheckError(ier);
+  check(ier);
   time_.update("mpi::Bcast");
 
 #else
@@ -344,7 +351,7 @@ void human::mpi::communicator::bcast(Type *buffer, int count)
 
   int ier = MPI_Bcast((void *)buffer, count, datatype, root_, mpi_comm_);
 
-  CheckError(ier);
+  check(ier);
   time_.update("mpi::Bcast");
 
 #else
@@ -395,7 +402,7 @@ void human::mpi::communicator::gather(const Type *buffer_send,
 
   int ier = MPI_Gather((void *)buffer_send, count_send, datatype, (void *)buffer_recv, count_recv, datatype, root_, mpi_comm_);
 
-  CheckError(ier);
+  check(ier);
   time_.update("mpi::Gather");
 
 #else
@@ -422,7 +429,7 @@ void human::mpi::communicator::gatherv(const Type *buffer_send,
 
   int ier = MPI_Gatherv((void *)buffer_send, count_send, datatype, (void *)buffer_recv, counts_recv, displacements, datatype, root_, mpi_comm_);
 
-  CheckError(ier);
+  check(ier);
   time_.update("mpi::Gather");
 
 #else
@@ -464,7 +471,7 @@ void human::mpi::communicator::wait(MPI_Request &request)
   time_.update("Comm::Wait");
 
   int ier = MPI_Wait(&request, MPI_STATUS_IGNORE);
-  CheckError(ier);
+  check(ier);
 
   time_.update("Comm::Wait");
 #else
@@ -481,7 +488,7 @@ void human::mpi::communicator::waitall(int count, MPI_Request requests[])
   time_.update("Comm::Waitall");
 
   int ier = MPI_Waitall(count, requests, MPI_STATUSES_IGNORE);
-  CheckError(ier);
+  check(ier);
 
   time_.update("Comm::Waitall");
 #else
@@ -498,7 +505,7 @@ void human::mpi::communicator::barrier()
   time_.update("Comm::Barrier");
 
   int ier = MPI_Barrier(mpi_comm_);
-  CheckError(ier);
+  check(ier);
 
   time_.update("Comm::Barrier");
 #endif
@@ -514,7 +521,7 @@ void human::mpi::communicator::barrier()
  * @param ierr
  * @param message
  */
-void human::mpi::communicator::CheckError(int ierr, std::string message)
+void human::mpi::communicator::check(int ierr, std::string message)
 {
 #ifdef USE_HUMAN_MPI
 
@@ -527,7 +534,7 @@ void human::mpi::communicator::CheckError(int ierr, std::string message)
     MPI_Error_string(ierr, err_str, &err_str_len);
     std::string err_msg(err_str, err_str_len);
 
-    std::cerr << "<human::mpi::communicator::CheckError> rank: "
+    std::cerr << "<human::mpi::communicator::check> rank: "
               << rank_ << "/" << size_
               << "\nMessage: " << message
               << "\nMPI Error Message: " << err_msg
