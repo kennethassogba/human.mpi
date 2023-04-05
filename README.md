@@ -14,7 +14,7 @@ make -j
 ```c++
 #include "human/mpi.hpp"
 // ...
-human::mpi::communicator world(argc, argv);
+human::mpi::communicator world();
 
 auto rank = world.rank();
 auto size = world.size();
@@ -41,14 +41,14 @@ world.display(); // display time table
 
 ## Roadmap
 - Write tests
-- Cmake Ninja
+- Add multiple executable in Cmake
 - Github action for ci cd
 - Simple Doc
 - Write docker file
 
 ## Write
-- Developping a wrapper around MPI
-- What I learn will writing
+- Developping an interface around MPI
+- What I learn while writing
 
 
 Inspired by Boost.MPI
