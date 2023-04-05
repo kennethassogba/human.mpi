@@ -7,8 +7,10 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
 
 include_directories(include)
 
+
 add_executable(usage bin/usage.cpp)
-add_executable(broadcast bin/broadcast.cpp)
+# add_executable(broadcast bin/broadcast.cpp)
+# target_include_directories(usage PUBLIC include)
 
 # OpenMP
 find_package(OpenMP)
