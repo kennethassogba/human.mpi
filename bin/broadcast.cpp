@@ -2,7 +2,7 @@
 // Use the cmake(readme) or
 // mpiccx this.cpp -o this
 // mpirun -n 2 this
-#include "../inc/mpi.hpp"
+#include "human/mpi.hpp"
 
 int main(int argc, char *argv[])
 {

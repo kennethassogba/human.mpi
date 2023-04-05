@@ -3,7 +3,7 @@
 // mpiccx usage.cpp -o usage
 // mpirun -n 2 usage
 #include <cassert>
-#include "../inc/mpi.hpp"
+#include "human/mpi.hpp"
 
 int main(int argc, char *argv[])
 {

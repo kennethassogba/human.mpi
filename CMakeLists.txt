@@ -5,9 +5,10 @@ set(CMAKE_CXX_STANDARD 11)
 set(GCC_COVERAGE_COMPILE_FLAGS "-Wall -pedantic -lm -O3 -funroll-loops")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
 
-include_directories(inc)
+include_directories(include)
 
 add_executable(usage bin/usage.cpp)
+add_executable(broadcast bin/broadcast.cpp)
 
 # OpenMP
 find_package(OpenMP)
