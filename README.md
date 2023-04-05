@@ -12,7 +12,7 @@ make -j
 
 ## Usage
 ```c++
-#include "human.mpi/mpi.hpp"
+#include "human/mpi.hpp"
 // ...
 human::mpi::communicator world(argc, argv);
 
