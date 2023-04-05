@@ -1,6 +1,6 @@
 # Human.MPI 
 
-A vanilla header-only object oriented interface around MPI in C++
+A vanilla header-only object oriented interface around MPI in C++.
 
 ## Build
 ```bash
