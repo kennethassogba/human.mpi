@@ -30,6 +30,10 @@ std::cout << "P" << rank << " " << msg << std::endl;
 world.display(); // display time table
 ```
 
+## Features
+- Send `vector` and `string` with automatic resize
+- Time events and display time table
+
 ## Macro
 - -DUSE_HUMAN_MPI use the lib
 - -DHUMAN_MPI_TIMER_USE_MPI=false use chrono
