@@ -23,7 +23,7 @@ std::cout << "Process " << rank << "/" << size << std::endl;
 std::string msg;
 if (world.rank() == world.root()) msg = "Hello";
 
-bcast(msg);
+world.bcast(msg);
 
 std::cout << "P" << rank << " " << msg << std::endl;
 

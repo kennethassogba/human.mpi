@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
   if (world.rank() == world.root())
     msg = "Hello";
 
-  bcast(msg);
+  world.bcast(msg);
 
   std::cout << "P" << rank << " " << msg << std::endl;
 
