@@ -134,7 +134,7 @@ namespace human
 #endif
 
         ostr << std::endl
-             << "              time(s)      #call     event        using " << timingtype << "  " << msg << std::endl
+             << "              time(s)      #call     event        using " << timingtype << "  " << msg << std::endl;
 
         ostr.unsetf(std::ios::floatfield);
 
