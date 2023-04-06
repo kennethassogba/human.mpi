@@ -30,6 +30,5 @@ set(LINK_LIBS ${LINK_LIBS} MPI::MPI_CXX)
 add_executable(usage bin/usage.cpp)
 target_link_libraries(usage PUBLIC ${LINK_LIBS})
 
-
 add_executable(broadcast bin/broadcast.cpp)
 target_link_libraries(broadcast PUBLIC ${LINK_LIBS})
