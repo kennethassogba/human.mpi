@@ -1,7 +1,7 @@
 #ifndef HUMAN_COMMUNICATOR_HPP
 #define HUMAN_COMMUNICATOR_HPP
 
-#if defined(OMPI_MPICXX) || defined(I_MPI_CXX) // || MPICH
+#if defined(MPI_C_FOUND)
 #define USE_HUMAN_MPI
 #endif
 

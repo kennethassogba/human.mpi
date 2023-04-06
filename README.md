@@ -27,7 +27,15 @@ world.display(); // display time table
 mkdir build && cd build
 cmake ..
 make -j
-mpiexec -n 2 ./usage
+```
+or
+```bash
+cmake -B build
+cmake --build build
+```
+Then try 
+```bash
+mpiexec -n 2 build/usage
 ```
 
 ## Features
