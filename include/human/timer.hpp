@@ -100,7 +100,7 @@ namespace human
     };
 
     // ----------------------------------------------------------------
-    // Timer: Track many timing events
+    // Timer: Tracking of multiple timing events.
     // ----------------------------------------------------------------
     class Timer
     {
@@ -134,9 +134,7 @@ namespace human
 #endif
 
         ostr << std::endl
-             << "          ------------------------------------------------------------------------" << std::endl
              << "              time(s)      #call     event        using " << timingtype << "  " << msg << std::endl
-             << "          ------------------------------------------------------------------------" << std::endl;
 
         ostr.unsetf(std::ios::floatfield);
 
@@ -153,7 +151,6 @@ namespace human
                << "     " << event.c_str()
                << std::endl;
         }
-        ostr << "          ------------------------------------------------------------------------" << std::endl;
 
         std::cout << ostr.str();
         if (out_file_)
