@@ -9,22 +9,26 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
 set(CMAKE_CXX_FLAGS_DEBUG "-g -fsanitize=address")
 
 include_directories(include)
-
-
-add_executable(usage bin/usage.cpp)
 # target_include_directories(usage PUBLIC include)
 
 # OpenMP
 find_package(OpenMP)
 if(OpenMP_CXX_FOUND)
-    target_link_libraries(usage PUBLIC OpenMP::OpenMP_CXX)
+    # target_link_libraries(usage PUBLIC OpenMP::OpenMP_CXX)
     set(LINK_LIBS ${LINK_LIBS} ${OpenMP_CXX_LIBRARIES})
 endif()
 
 # MPI
 find_package(MPI)
-target_link_libraries(usage PUBLIC MPI::MPI_CXX)
+# target_link_libraries(usage PUBLIC MPI::MPI_CXX)
 set(LINK_LIBS ${LINK_LIBS} ${MPI_CXX_LIBRARIES})
+
+
+# Executables
+
+add_executable(usage bin/usage.cpp)
+target_link_libraries(usage PUBLIC ${LINK_LIBS})
+
 
 add_executable(broadcast bin/broadcast.cpp)
 target_link_libraries(broadcast PUBLIC ${LINK_LIBS})
