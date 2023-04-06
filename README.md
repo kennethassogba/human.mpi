@@ -24,7 +24,7 @@ world.display(); // display time table
 
 ## Build an example
 ```bash
-mkdir build; cd build
+mkdir build && cd build
 cmake ..
 make -j
 mpiexec -n 2 ./usage
@@ -42,14 +42,14 @@ mpiexec -n 2 ./usage
 
 ## Roadmap
 - Add mpi request in human::mpi
-- Write tests
-- Add multiple executable in Cmake
+- Write tests using ctest or catch2
+- Add async experiments
+- Add multiple executable target in Cmake
 - Configure Github action
 - Simple Doc
 
 ## Write
 - Developping an interface around MPI
-- What I learn while writing
 
 
 Inspired by Boost.MPI
