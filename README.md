@@ -2,14 +2,6 @@
 
 A vanilla header-only object oriented interface around MPI in C++.
 
-## Build
-```bash
-mkdir build; cd build
-cmake ..
-make -j
-./usage
-```
-
 ## Usage
 ```c++
 #include "human/mpi.hpp"
@@ -30,9 +22,18 @@ std::cout << "P" << rank << " " << msg << std::endl;
 world.display(); // display time table
 ```
 
+## Build an example
+```bash
+mkdir build; cd build
+cmake ..
+make -j
+./usage
+```
+
 ## Features
 - Send `vector` and `string` with automatic resize
 - Time events and display time table
+- Not exhaustive but simple to extend
 
 ## Macro
 - -DUSE_HUMAN_MPI use the lib
@@ -40,11 +41,11 @@ world.display(); // display time table
 - -DHUMAN_MPI_TIMER_FOR_REAL=false disable timing
 
 ## Roadmap
+- Add mpi request in human::mpi
 - Write tests
 - Add multiple executable in Cmake
-- Github action for ci cd
+- Configure Github action
 - Simple Doc
-- Write docker file
 
 ## Write
 - Developping an interface around MPI
