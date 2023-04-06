@@ -134,7 +134,7 @@ namespace human
 #endif
 
         ostr << std::endl
-             << "              time(s)      #call     event        using " << timingtype << "  " << msg << std::endl;
+             << msg << " " << timingtype << "  time(s)      #call     event        using " << std::endl;
 
         ostr.unsetf(std::ios::floatfield);
 
@@ -151,6 +151,7 @@ namespace human
                << "     " << event.c_str()
                << std::endl;
         }
+        ostr << std::endl;
 
         std::cout << ostr.str();
         if (out_file_)
@@ -161,7 +162,6 @@ namespace human
       std::map<std::string, TimeEvent> time_table_;
       std::ofstream *out_file_;
     };
-
   }
 }
 
