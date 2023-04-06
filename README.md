@@ -1,8 +1,9 @@
-# Human.MPI 
+# Human.MPI
 
 A vanilla header-only object oriented interface around MPI in C++.
 
 ## Usage
+
 ```c++
 #include "human/mpi.hpp"
 // ...
@@ -23,33 +24,41 @@ world.display(); // display time table
 ```
 
 ## Build an example
+
 ```bash
 mkdir build && cd build
 cmake ..
 make -j
 ```
+
 or
+
 ```bash
 cmake -B build
 cmake --build build
 ```
-Then try 
+
+Then try
+
 ```bash
 mpiexec -n 2 build/usage
 ```
 
 ## Features
+
 - Send `vector` and `string` with automatic resize
 - Time events and display time table
 - Not exhaustive but simple to extend
 
 ## Macro
+
 - -DCMAKE_BUILD_TYPE=Debug
 - -DUSE_HUMAN_MPI use the lib
 - -DHUMAN_MPI_TIMER_USE_MPI=false use chrono
 - -DHUMAN_MPI_TIMER_FOR_REAL=false disable timing
 
 ## Roadmap
+
 - Add mpi request in human::mpi
 - Write tests using ctest or catch2
 - Add async experiments
@@ -58,7 +67,7 @@ mpiexec -n 2 build/usage
 - Simple Doc
 
 ## Write
-- Developping an interface around MPI
 
+- Developping an interface around MPI
 
 Inspired by Boost.MPI
