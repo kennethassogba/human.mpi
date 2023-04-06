@@ -44,6 +44,7 @@ mpiexec -n 2 build/usage
 - Not exhaustive but simple to extend
 
 ## Macro
+- -DCMAKE_BUILD_TYPE:STRING=Debug
 - -DUSE_HUMAN_MPI use the lib
 - -DHUMAN_MPI_TIMER_USE_MPI=false use chrono
 - -DHUMAN_MPI_TIMER_FOR_REAL=false disable timing
