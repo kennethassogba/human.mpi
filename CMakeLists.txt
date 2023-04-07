@@ -27,8 +27,8 @@ set(LINK_LIBS ${LINK_LIBS} MPI::MPI_CXX)
 
 # Executables
 
-add_executable(usage bin/usage.cpp)
-target_link_libraries(usage PUBLIC ${LINK_LIBS})
+add_executable(send examples/send.cpp)
+target_link_libraries(send PUBLIC ${LINK_LIBS})
 
-add_executable(broadcast bin/broadcast.cpp)
-target_link_libraries(broadcast PUBLIC ${LINK_LIBS})
+add_executable(bcast examples/bcast.cpp)
+target_link_libraries(bcast PUBLIC ${LINK_LIBS})

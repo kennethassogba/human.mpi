@@ -41,7 +41,8 @@ cmake --build build
 Then try
 
 ```bash
-mpiexec -n 2 build/usage
+mpiexec -n 2 build/send
+mpiexec -n 4 build/bcast
 ```
 
 ## Features
