@@ -49,6 +49,7 @@ mpiexec -n 4 build/bcast
 
 - Send `vector` and `string` with automatic resize
 - Time events and display time table
+- `MPI` error checking
 - Not exhaustive but simple to extend
 
 ## Macro
