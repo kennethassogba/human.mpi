@@ -59,13 +59,16 @@ mpiexec -n 4 build/bcast
 - -DHUMAN_MPI_TIMER_USE_MPI=false use chrono
 - -DHUMAN_MPI_TIMER_FOR_REAL=false disable timing
 
+## Testsuite
+
+The testsuite is run on push and pull request using GitHub Actions
+
 ## Roadmap
 
 - Add mpi request in human::mpi
-- Write tests using ctest or catch2
+- Write tests using ctest + gtest or catch2
 - Add async experiments
-- Add multiple executable target in Cmake
-- Configure Github action
+- Add multiple executable target function in Cmake
 - Simple Doc
 
 ## Write
