@@ -19,8 +19,6 @@ if (world.rank() == world.root()) msg = "Hello";
 world.bcast(msg);
 
 std::cout << "P" << rank << " " << msg << std::endl;
-
-world.display(); // display time table
 ```
 
 ## Build an example
@@ -48,7 +46,6 @@ mpiexec -n 4 build/bcast
 ## Features
 
 - Send `vector` and `string` with automatic resize
-- Time events and display time table
 - `MPI` error checking
 - Not exhaustive but simple to extend
 
@@ -56,8 +53,6 @@ mpiexec -n 4 build/bcast
 
 - -DCMAKE_BUILD_TYPE=Debug
 - -DUSE_HUMAN_MPI use the lib
-- -DHUMAN_MPI_TIMER_USE_MPI=false use chrono
-- -DHUMAN_MPI_TIMER_FOR_REAL=false disable timing
 
 ## Testsuite
 

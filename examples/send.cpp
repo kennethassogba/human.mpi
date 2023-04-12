@@ -1,8 +1,9 @@
 // A simple example using human.mpi
-// Use the cmake(readme) or
-// mpiccx usage.cpp -o usage
-// mpirun -n 2 usage
+// mpicxx this.cpp -o this
+// mpirun -n 2 this
+#include <iostream>
 #include <cassert>
+
 #include "human/mpi.hpp"
 
 int main(int argc, char *argv[])
@@ -36,8 +37,6 @@ int main(int argc, char *argv[])
   world.recv(msg_recv, other, tag);
 
   std::cout << "P" << rank << " " << msg_sent << " " << msg_recv << std::endl;
-
-  world.display();
 
   return 0;
 }

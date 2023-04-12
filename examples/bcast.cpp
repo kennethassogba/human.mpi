@@ -1,7 +1,8 @@
 // A simple example using human.mpi
-// Use the cmake(readme) or
-// mpiccx this.cpp -o this
-// mpirun -n 2 this
+// mpicxx this.cpp -o this
+// mpirun -n 4 this
+#include <iostream>
+
 #include "human/mpi.hpp"
 
 int main(int argc, char *argv[])
@@ -20,8 +21,6 @@ int main(int argc, char *argv[])
   world.bcast(msg);
 
   std::cout << "P" << rank << " " << msg << std::endl;
-
-  world.display();
 
   return 0;
 }
