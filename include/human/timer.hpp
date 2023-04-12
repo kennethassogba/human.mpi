@@ -18,18 +18,18 @@
 
 #ifdef USE_HUMAN_MPI
 #define HUMAN_MPI_TIMER_USE_MPI 1
-#include "mpi.h"
+#include <mpi.h>
 #endif
 
 #define HUMAN_MPI_TIMER_FOR_REAL 1
 
 #include <map>
 #include <string>
+#include <chrono>
 #include <iostream>
 #include <sstream>
 #include <fstream>
 #include <iomanip>
-#include <chrono>
 
 namespace human
 {
@@ -62,7 +62,7 @@ namespace human
       {
       }
 
-      void update()
+      void clock()
       {
         if (!is_ticking_)
         {
@@ -107,10 +107,10 @@ namespace human
     public:
       Timer() : out_file_(nullptr) {}
 
-      void update(const std::string &event)
+      void clock(const std::string &event)
       {
 #if HUMAN_MPI_TIMER_FOR_REAL
-        time_table_[event].update();
+        time_table_[event].clock();
 #else
         (void)event;
 #endif
@@ -123,20 +123,18 @@ namespace human
         int count;
         double total;
         std::string event;
-        std::ostringstream ostr;
-        ostr.str("");
+        std::ostringstream sout;
+        sout.str("");
 
-        std::string timingtype("");
+        std::string timingtype("high_resolution_clock");
 #if HUMAN_MPI_TIMER_USE_MPI
         timingtype = "MPI_Wtime";
-#else
-        timingtype = "high_resolution_clock";
 #endif
 
-        ostr << std::endl
+        sout << std::endl
              << msg << " " << timingtype << "  time(s)      #call     event" << std::endl;
 
-        ostr.unsetf(std::ios::floatfield);
+        sout.unsetf(std::ios::floatfield);
 
         for (const auto &evt : time_table_)
         {
@@ -144,18 +142,18 @@ namespace human
           count = evt.second.nb_call_;
           total = evt.second.time_total_;
 
-          ostr << std::setw(10) << " "
+          sout << std::setw(10) << " "
                << std::setprecision(5) << std::setw(10) << total
                << "  "
                << std::setw(10) << count
                << "     " << event.c_str()
                << std::endl;
         }
-        ostr << std::endl;
+        sout << std::endl;
 
-        std::cout << ostr.str();
+        std::cout << sout.str();
         if (out_file_)
-          *out_file_ << ostr.str();
+          *out_file_ << sout.str();
       }
 
     private:

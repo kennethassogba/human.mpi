@@ -132,7 +132,7 @@ namespace human
       // ----------------------------------------------------------------
       // Time
       // ----------------------------------------------------------------
-      void time(const std::string &event) { time_.update(event); }
+      void time(const std::string &event) { time_.clock(event); }
       void display() { time_.display("P" + std::to_string(rank_)); }
 
     private:
@@ -168,12 +168,12 @@ void human::mpi::communicator::send(Type *buffer, int count, int receiver, int t
 
   MPI_Datatype datatype = gettype<Type>();
 
-  time_.update("mpi::Send");
+  time_.clock("mpi::Send");
 
   int ier = MPI_Send(buffer, count, datatype, receiver, tag, mpi_comm_);
   check(ier);
 
-  time_.update("mpi::Send");
+  time_.clock("mpi::Send");
 #else
   (void)buffer;
   (void)count;
@@ -210,12 +210,12 @@ void human::mpi::communicator::isend(Type *buffer, int count, int receiver, int 
 
   MPI_Datatype datatype = gettype<Type>();
 
-  time_.update("mpi::ISend");
+  time_.clock("mpi::ISend");
 
   int ier = MPI_Isend((void *)buffer, count, datatype, receiver, tag, mpi_comm_, &request);
   check(ier);
 
-  time_.update("mpi::ISend");
+  time_.clock("mpi::ISend");
 #else
   (void)buffer;
   (void)count;
@@ -238,12 +238,12 @@ void human::mpi::communicator::recv(Type *buffer, int count, int sender, int tag
 
   MPI_Datatype datatype = gettype<Type>();
 
-  time_.update("mpi::Recv");
+  time_.clock("mpi::Recv");
 
   int ier = MPI_Recv(buffer, count, datatype, sender, tag, mpi_comm_, MPI_STATUS_IGNORE);
   check(ier);
 
-  time_.update("mpi::Recv");
+  time_.clock("mpi::Recv");
 #else
   (void)buffer;
   (void)count;
@@ -281,12 +281,12 @@ void human::mpi::communicator::irecv(Type *buffer, int count, int sender, int ta
 
   MPI_Datatype datatype = gettype<Type>();
 
-  time_.update("mpi::IRecv");
+  time_.clock("mpi::IRecv");
 
   int ier = MPI_Irecv((void *)buffer, count, datatype, sender, tag, mpi_comm_, &request);
   check(ier);
 
-  time_.update("mpi::IRecv");
+  time_.clock("mpi::IRecv");
 #else
   (void)buffer;
   (void)count;
@@ -309,12 +309,12 @@ void human::mpi::communicator::allreduce_sum(Type &value)
   MPI_Datatype datatype = gettype<Type>();
   Type tmp_send = value;
 
-  time_.update("mpi::Allreduce_Sum");
+  time_.clock("mpi::Allreduce_Sum");
 
   int ier = MPI_Allreduce(&tmp_send, &value, 1, datatype, MPI_SUM, mpi_comm_);
   check(ier);
 
-  time_.update("mpi::Allreduce_Sum");
+  time_.clock("mpi::Allreduce_Sum");
 #else
   (void)value;
 #endif
@@ -330,13 +330,13 @@ void human::mpi::communicator::iallreduce_sum(Type &value, MPI_Request &request)
   MPI_Datatype datatype = gettype<Type>();
   Type tmp_send = value;
 
-  time_.update("mpi::Iallreduce_Sum");
+  time_.clock("mpi::Iallreduce_Sum");
 
   int ier = MPI_Iallreduce(&tmp_send, &value, 1, datatype, MPI_SUM, mpi_comm_, &request);
 
   check(ier);
 
-  time_.update("mpi::Iallreduce_Sum");
+  time_.clock("mpi::Iallreduce_Sum");
 #else
   (void)value;
   (void)request;
@@ -355,12 +355,12 @@ void human::mpi::communicator::bcast(Type &buffer, int count)
 
   MPI_Datatype datatype = gettype<Type>();
 
-  time_.update("mpi::Bcast");
+  time_.clock("mpi::Bcast");
 
   int ier = MPI_Bcast(&buffer, count, datatype, root_, mpi_comm_);
 
   check(ier);
-  time_.update("mpi::Bcast");
+  time_.clock("mpi::Bcast");
 
 #else
   (void)buffer;
@@ -377,12 +377,12 @@ void human::mpi::communicator::bcast(Type *buffer, int count)
 
   MPI_Datatype datatype = gettype<Type>();
 
-  time_.update("mpi::Bcast");
+  time_.clock("mpi::Bcast");
 
   int ier = MPI_Bcast((void *)buffer, count, datatype, root_, mpi_comm_);
 
   check(ier);
-  time_.update("mpi::Bcast");
+  time_.clock("mpi::Bcast");
 
 #else
   (void)buffer;
@@ -426,12 +426,12 @@ void human::mpi::communicator::gather(const Type *buffer_send,
 
   MPI_Datatype datatype = gettype<Type>();
 
-  time_.update("mpi::Gather");
+  time_.clock("mpi::Gather");
 
   int ier = MPI_Gather((void *)buffer_send, count_send, datatype, (void *)buffer_recv, count_recv, datatype, root_, mpi_comm_);
 
   check(ier);
-  time_.update("mpi::Gather");
+  time_.clock("mpi::Gather");
 #else
   (void)buffer;
   (void)count;
@@ -452,12 +452,12 @@ void human::mpi::communicator::gatherv(const Type *buffer_send,
 
   MPI_Datatype datatype = gettype<Type>();
 
-  time_.update("mpi::Gather");
+  time_.clock("mpi::Gather");
 
   int ier = MPI_Gatherv((void *)buffer_send, count_send, datatype, (void *)buffer_recv, counts_recv, displacements, datatype, root_, mpi_comm_);
 
   check(ier);
-  time_.update("mpi::Gather");
+  time_.clock("mpi::Gather");
 
 #else
   (void)buffer;
@@ -495,12 +495,12 @@ void human::mpi::communicator::wait(MPI_Request &request)
   if (size_ <= 1)
     return;
 
-  time_.update("Comm::Wait");
+  time_.clock("Comm::Wait");
 
   int ier = MPI_Wait(&request, MPI_STATUS_IGNORE);
   check(ier);
 
-  time_.update("Comm::Wait");
+  time_.clock("Comm::Wait");
 #else
   (void)request;
 #endif
@@ -512,12 +512,12 @@ void human::mpi::communicator::waitall(int count, MPI_Request requests[])
   if (size_ <= 1)
     return;
 
-  time_.update("Comm::Waitall");
+  time_.clock("Comm::Waitall");
 
   int ier = MPI_Waitall(count, requests, MPI_STATUSES_IGNORE);
   check(ier);
 
-  time_.update("Comm::Waitall");
+  time_.clock("Comm::Waitall");
 #else
   (void)count;
   (void)requests;
@@ -529,12 +529,12 @@ void human::mpi::communicator::barrier()
 #ifdef USE_HUMAN_MPI
   if (size_ <= 1)
     return;
-  time_.update("Comm::Barrier");
+  time_.clock("Comm::Barrier");
 
   int ier = MPI_Barrier(mpi_comm_);
   check(ier);
 
-  time_.update("Comm::Barrier");
+  time_.clock("Comm::Barrier");
 #endif
 }
 
