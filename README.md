@@ -1,6 +1,8 @@
 # Human.MPI
 
-A vanilla header-only object oriented interface around MPI in C++.
+A simple header-only object oriented interface around MPI in C++.
+
+The companion note can be found at [write MPI interface](https://kennethassogba.github.io/notes/write-interface-mpi).
 
 ## Usage
 
