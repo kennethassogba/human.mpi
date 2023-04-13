@@ -1,6 +1,6 @@
 # Human.MPI
 
-A simple header-only object oriented interface around MPI in C++.
+A simple header-only object oriented interface around MPI in C++. Inspired by [Boost.MPI](https://github.com/boostorg/mpi).
 
 The companion note can be found at [write MPI interface](https://kennethassogba.github.io/notes/write-interface-mpi).
 
@@ -67,9 +67,3 @@ The testsuite is run on push and pull request using GitHub Actions
 - Add async experiments
 - Add multiple executable target function in Cmake
 - Simple Doc
-
-## Write
-
-- Developping an interface around MPI
-
-Inspired by Boost.MPI
